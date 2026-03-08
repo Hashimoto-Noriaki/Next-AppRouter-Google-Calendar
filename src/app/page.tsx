@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { PrimaryBtn } from '@/shared/atoms/PrimaryBtn'
+import { PrimaryBtn } from '@/shared/components/atoms/PrimaryBtn'
 
 export default function Home() {
   const router = useRouter()
