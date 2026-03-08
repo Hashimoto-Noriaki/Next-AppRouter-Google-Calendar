@@ -1,8 +1,10 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import { PrimaryBtn } from '@/shared/atoms/PrimaryBtn'
 
 export default function Home() {
+  const router = useRouter()
   return(
     <div className="relative">
       <header className="bg-white leading-12.5 fixed top-0 left-0 right-0">
@@ -22,7 +24,7 @@ export default function Home() {
           <p className="pt-[10vh] text-5xl">お互いのスケジュールを管理するアプリです</p>
         </div>
         <div className="pt-[20vh]">
-          <PrimaryBtn onClick={() => null}>ログイン</PrimaryBtn>
+          <PrimaryBtn onClick={() => router.push("/login")}>ログイン</PrimaryBtn>
         </div>
       </main>
     </div>
