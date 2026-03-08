@@ -1,3 +1,4 @@
+import { Input } from '@/shared/components/atoms/Input'
 import { PrimaryBtn } from '@/shared/components/atoms/PrimaryBtn'
 
 export default function LoginPage() {
@@ -8,16 +9,14 @@ export default function LoginPage() {
                     ログイン
                 </h1>
                 <div className="w-[80%]">
-                    <input
+                    <Input
                         type="text"
-                        className="w-full border-4 border-solid border-lime-800 rounded-md p-2"
                         placeholder="email"
                     />
                 </div>
                 <div className="w-[80%]">
-                    <input
+                    <Input
                         type="password"
-                        className="w-full border-4 border-solid border-lime-800 rounded-md p-2"
                         placeholder="password"
                     />
                 </div>
