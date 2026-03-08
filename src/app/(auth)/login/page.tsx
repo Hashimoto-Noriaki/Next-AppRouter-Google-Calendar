@@ -1,3 +1,5 @@
+'use client'    
+
 import { Input } from '@/shared/components/atoms/Input'
 import { PrimaryBtn } from '@/shared/components/atoms/PrimaryBtn'
 
@@ -20,7 +22,7 @@ export default function LoginPage() {
                         placeholder="password"
                     />
                 </div>
-                <PrimaryBtn>ログイン</PrimaryBtn>
+                <PrimaryBtn onClick={()=> null}>ログイン</PrimaryBtn>
             </form>
         </div>
     )
