@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { PrimaryBtn } from '@/shared/components/atoms/PrimaryBtn'
+import { PrimaryBtn } from '@/shared/components/atoms'
 
 export default function Home() {
   const router = useRouter()

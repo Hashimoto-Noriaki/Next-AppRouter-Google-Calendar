@@ -1,6 +1,6 @@
 'use client'
 
-import { useLoginUser } from '@/features/auth/hooks/useLoginUser'
+import { useLoginUser } from '@/features/auth'
 
 export default function CalendarPage() {
     const { loginUser } = useLoginUser()

@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FaUser } from 'react-icons/fa'
 import { MdLogout } from 'react-icons/md'
-import { useLoginUser } from '@/features/auth/hooks/useLoginUser'
+import { useLoginUser } from '@/features/auth'
 
 export default function AuthenticatedLayout({ children }: { children: ReactNode }) {
     const router = useRouter()
