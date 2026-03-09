@@ -1,14 +1,18 @@
 'use client'    
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Input } from '@/shared/components/atoms/Input'
 import { PrimaryBtn } from '@/shared/components/atoms/PrimaryBtn'
 import { loginSchema,type LoginFormData } from '@/features/auth/schemas/loginSchema'
 import { login } from '@/features/auth/api/login'
+import { useLoginUser } from '@/features/auth/hooks/useLoginUser'
 
 export default function LoginPage() {
+    const router = useRouter()
+    const { setLoginUser } = useLoginUser()
     const [errorMessage,setErrorMessage] = useState("")
 
     const  {
@@ -22,7 +26,9 @@ export default function LoginPage() {
     const onSubmit = (data: LoginFormData) => {
         setErrorMessage("")
         try {
-            login(data)
+            const resUser = login(data)
+            setLoginUser({ id: resUser.id, name: resUser.name })
+            router.push("/calendar")
         } catch {
             setErrorMessage("ログインに失敗しました。")
         }
@@ -59,7 +65,7 @@ export default function LoginPage() {
                         <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
                     )}
                 </div>
-                <PrimaryBtn onClick={()=> null}>ログイン</PrimaryBtn>
+                <PrimaryBtn type="submit">ログイン</PrimaryBtn>
             </form>
         </div>
     )
