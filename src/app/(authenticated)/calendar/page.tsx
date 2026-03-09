@@ -1,13 +1,13 @@
 'use client'
 
-import { useLoginUser } from '@/features/auth'
+import { getMonth } from 'date-fns'
 
 export default function CalendarPage() {
-    const { loginUser } = useLoginUser()
     return (
-        <div>
-            <p>ID: {loginUser.id}</p>
-            <p>名前: {loginUser.name}</p>
-        </div>
+        <>
+            <h1 className="font-bold text-3xl mb-5">
+                {`${getMonth(new Date)+ 1}月`}
+            </h1>
+        </>
     )
 }
