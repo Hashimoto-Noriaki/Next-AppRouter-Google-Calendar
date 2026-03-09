@@ -1,15 +1,14 @@
-import { ReactNode } from 'react'
+import { ComponentProps, ReactNode } from 'react'
 
 type PropsType = {
-    children:ReactNode;
-    onClick:() => void;
-}
+    children: ReactNode
+} & ComponentProps<'button'>
 
-export const PrimaryBtn = ({ children,onClick }: PropsType) => {
+export const PrimaryBtn = ({ children, ...props }: PropsType) => {
     return (
-        <button 
-            className="bg-lime-800 text-white p-4 text-lg rounded-lg"
-            onClick={onClick}
+        <button
+            className="bg-lime-800 text-white rounded-lg text-lg p-4"
+            {...props}
         >
             {children}
         </button>
