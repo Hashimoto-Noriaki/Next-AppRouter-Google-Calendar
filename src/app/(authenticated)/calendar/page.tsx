@@ -1,16 +1,12 @@
 'use client'
 
 import { useState,useEffect } from 'react'
-import { eachDayOfInterval,eachWeekOfInterval,endOfMonth,endOfWeek,getMonth,getDate,isSameMonth,isToday,startOfMonth } from 'date-fns'
-import { DAYS_LIST } from '@/constants/calendar'
+import { eachDayOfInterval,eachWeekOfInterval,endOfMonth,endOfWeek,getMonth,startOfMonth } from 'date-fns'
+import { CalendarBody,CalendarHeader} from '@/features/calendar'
+import type { DateList } from "@/types/calendar"
 
 export default function CalendarPage() {
     const [dateList,setDateList] = useState<DateList>([])
-
-    const dateColor = (targetDate: Date, currentDate: Date): string => {
-        if (isToday(targetDate)) return "bg-lime-800 text-white rounded-full"
-        return isSameMonth(targetDate,currentDate) ? "text-black" : "text-gray-300"
-    }
 
     useEffect(()=> {
         const currentDate = new Date()
@@ -42,34 +38,8 @@ export default function CalendarPage() {
                 {`${getMonth(new Date)+ 1}月`}
             </h1>
             <table className="w-[80%] border-collapse border-2 border-solid border-lime-800 table-fixed">
-                <thead>
-                    <tr className="bg-lime-800 text-white rounded-tr-lg rounded-tl-lg py-10">
-                        {DAYS_LIST.map((day)=> (
-                            <th key={day} className="text-xl text-center py-3">
-                                {day}
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {dateList.map((oneWeek,weekIndex)=> (
-                        <tr key={`week-${weekIndex}`} className="mx-10">
-                            {oneWeek.map((item,dateIndex)=> (
-                                <td
-                                    key={`day-${weekIndex}-${dateIndex}`}
-                                    className="bg-white h-[10vh] border-2 border-solid border-lime-800"
-                                >
-                                    <span className={`inline-block w-5 leading-5 text-center ${dateColor(
-                                        item.date,
-                                        new Date()
-                                    )}`}>
-                                        {getDate(item.date)}
-                                    </span>
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                </tbody>
+                <CalendarHeader/>
+                <CalendarBody currentDate={new Date()} dateList={dateList}/>
             </table>
         </>
     )
