@@ -1,9 +1,36 @@
 'use client'
 
-import { getMonth } from 'date-fns'
+import { useState,useEffect } from 'react'
+import { eachDayOfInterval,eachWeekOfInterval,endOfMonth,endOfWeek,getMonth,getDate,startOfMonth } from 'date-fns'
 import { DAYS_LIST } from '@/constants/calendar'
 
 export default function CalendarPage() {
+    const [dateList,setDateList] = useState<DateList>([])
+
+    useEffect(()=> {
+        const currentDate = new Date()
+
+        const fetchCalendar = async() => {
+            const res = await fetch("/api/schedules")
+            await res.json()
+
+            const monthOfSundayList = eachWeekOfInterval({
+                start:startOfMonth(currentDate),
+                end:endOfMonth(currentDate),
+            })
+
+            const newDateList: DateList = monthOfSundayList.map((date)=> (
+                eachDayOfInterval({
+                    start:date,
+                    end:endOfWeek(date),
+                }).map((date)=> ({ date, schedules: []}))
+            ))
+            setDateList(newDateList)
+        }
+        fetchCalendar()
+    },[])
+
+
     return (
         <>
             <h1 className="font-bold text-3xl mb-5">
@@ -19,6 +46,22 @@ export default function CalendarPage() {
                         ))}
                     </tr>
                 </thead>
+                <tbody>
+                    {dateList.map((oneWeek,weekIndex)=> (
+                        <tr key={`week-${weekIndex}`} className="mx-10">
+                            {oneWeek.map((item,dateIndex)=> (
+                                <td
+                                    key={`day-${weekIndex}-${dateIndex}`}
+                                    className="bg-white h-[10vh] border-2 border-solid border-lime-800"
+                                >
+                                    <span className="inline-block w-5 leading-5 text-center">
+                                        {getDate(item.date)}
+                                    </span>
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
             </table>
         </>
     )
