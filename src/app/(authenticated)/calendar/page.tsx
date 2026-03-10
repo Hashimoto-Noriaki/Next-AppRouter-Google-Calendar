@@ -3,6 +3,7 @@
 import { useState,useEffect } from 'react'
 import { eachDayOfInterval,eachWeekOfInterval,endOfMonth,endOfWeek,getMonth,startOfMonth } from 'date-fns'
 import { CalendarBody,CalendarHeader} from '@/features/calendar'
+import type { DateList } from "@/types/calendar"
 
 export default function CalendarPage() {
     const [dateList,setDateList] = useState<DateList>([])
