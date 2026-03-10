@@ -1,11 +1,16 @@
 'use client'
 
 import { useState,useEffect } from 'react'
-import { eachDayOfInterval,eachWeekOfInterval,endOfMonth,endOfWeek,getMonth,getDate,startOfMonth } from 'date-fns'
+import { eachDayOfInterval,eachWeekOfInterval,endOfMonth,endOfWeek,getMonth,getDate,isSameMonth,isToday,startOfMonth } from 'date-fns'
 import { DAYS_LIST } from '@/constants/calendar'
 
 export default function CalendarPage() {
     const [dateList,setDateList] = useState<DateList>([])
+
+    const dateColor = (targetDate: Date, currentDate: Date): string => {
+        if (isToday(targetDate)) return "bg-lime-800 text-white rounded-full"
+        return isSameMonth(targetDate,currentDate) ? "text-black" : "text-gray-300"
+    }
 
     useEffect(()=> {
         const currentDate = new Date()
@@ -54,7 +59,10 @@ export default function CalendarPage() {
                                     key={`day-${weekIndex}-${dateIndex}`}
                                     className="bg-white h-[10vh] border-2 border-solid border-lime-800"
                                 >
-                                    <span className="inline-block w-5 leading-5 text-center">
+                                    <span className={`inline-block w-5 leading-5 text-center ${dateColor(
+                                        item.date,
+                                        new Date()
+                                    )}`}>
                                         {getDate(item.date)}
                                     </span>
                                 </td>
