@@ -62,7 +62,7 @@ export default function LoginPage() {
                         <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>
                     )}
                 </div>
-                <PrimaryBtn type="submit">ログイン</PrimaryBtn>
+                <PrimaryBtn size="lg" type="submit">ログイン</PrimaryBtn>
             </form>
         </div>
     )

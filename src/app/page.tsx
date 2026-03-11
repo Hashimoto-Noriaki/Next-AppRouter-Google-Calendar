@@ -27,7 +27,7 @@ export default function Home() {
           <p className="pt-[10vh] text-5xl">お互いのスケジュールを管理するアプリです</p>
         </div>
         <div className="pt-[20vh]">
-          <PrimaryBtn onClick={() => router.push("/login")}>ログイン</PrimaryBtn>
+          <PrimaryBtn size="lg" onClick={() => router.push("/login")}>ログイン</PrimaryBtn>
         </div>
       </main>
     </div>
