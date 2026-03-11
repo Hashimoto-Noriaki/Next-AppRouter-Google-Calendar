@@ -2,7 +2,7 @@
 
 import { useState,useEffect } from 'react'
 import { eachDayOfInterval,eachWeekOfInterval,endOfMonth,endOfWeek,getMonth,startOfMonth } from 'date-fns'
-import { CalendarBody,CalendarHeader} from '@/features/calendar'
+import { CalendarBody,CalendarHeader} from '@/features/calendar/components'
 import type { DateList } from "@/types/calendar"
 
 export default function CalendarPage() {
