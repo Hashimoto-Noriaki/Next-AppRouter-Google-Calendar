@@ -1,35 +1,13 @@
 'use client'
 
-import { useState,useEffect } from 'react'
-import { eachDayOfInterval,eachWeekOfInterval,endOfMonth,endOfWeek,getMonth,startOfMonth } from 'date-fns'
+import { useState } from 'react'
+import { getMonth } from 'date-fns'
+import { useCalendar } from '@/hooks/useCalendar'
 import { CalendarBody, CalendarHeader, CalendarNav } from '@/features/calendar/components'
-import type { DateList } from "@/types/calendar"
 
 export default function CalendarPage() {
     const [currentDate,setCurrentDate] = useState(new Date())
-    const [dateList,setDateList] = useState<DateList>([])
-
-    useEffect(()=> {
-        const fetchCalendar = async() => {
-            const res = await fetch("/api/schedules")
-            await res.json()
-
-            const monthOfSundayList = eachWeekOfInterval({
-                start:startOfMonth(currentDate),
-                end:endOfMonth(currentDate),
-            })
-
-            const newDateList: DateList = monthOfSundayList.map((date)=> (
-                eachDayOfInterval({
-                    start:date,
-                    end:endOfWeek(date),
-                }).map((date)=> ({ date, schedules: []}))
-            ))
-            setDateList(newDateList)
-        }
-        fetchCalendar()
-    },[currentDate])
-
+    const { dateList } = useCalendar({ currentDate })
 
     return (
         <>
