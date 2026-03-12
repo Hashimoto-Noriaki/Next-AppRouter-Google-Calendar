@@ -1,48 +1,13 @@
 'use client'
 
-import { useState,useEffect } from 'react'
-import { eachDayOfInterval,eachWeekOfInterval,endOfMonth,endOfWeek,isSameDay,parseISO,getMonth,startOfMonth } from 'date-fns'
+import { useState } from 'react'
+import { getMonth } from 'date-fns'
+import { useCalendar } from '@/hooks/useCalendar'
 import { CalendarBody, CalendarHeader, CalendarNav } from '@/features/calendar/components'
-import type { DateList,Schedule } from "@/types/calendar"
 
 export default function CalendarPage() {
     const [currentDate,setCurrentDate] = useState(new Date())
-    const [dateList,setDateList] = useState<DateList>([])
-
-    useEffect(()=> {
-        const fetchCalendar = async() => {
-            const res = await fetch("/api/schedules")
-            const scheduleList: Schedule[] = await res.json()
-
-            const monthOfSundayList = eachWeekOfInterval({
-                start:startOfMonth(currentDate),
-                end:endOfMonth(currentDate),
-            })
-            const newDateList: DateList = monthOfSundayList.map((date)=> (
-                eachDayOfInterval({
-                    start:date,
-                    end:endOfWeek(date),
-                }).map((date)=> ({ date, schedules: []}))
-            ))
-            scheduleList.forEach((schedule) => {
-                const scheduleDate = parseISO(schedule.date)
-                const firstIndex = newDateList.findIndex((oneWeek) =>
-                    oneWeek.some((item) => isSameDay(item.date, scheduleDate))
-                )
-                if (firstIndex === -1) return
-                const secondIndex = newDateList[firstIndex].findIndex((item) =>
-                    isSameDay(item.date, scheduleDate)
-                )
-                newDateList[firstIndex][secondIndex].schedules = [
-                    ...newDateList[firstIndex][secondIndex].schedules,
-                    schedule,
-                ]
-            })
-            setDateList(newDateList)
-        }
-        fetchCalendar()
-    },[currentDate])
-
+    const { dateList } = useCalendar({ currentDate })
 
     return (
         <>
