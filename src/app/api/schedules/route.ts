@@ -1,10 +1,10 @@
-import { NextResponse } from 'next/server'
+import { NextRequest,NextResponse } from 'next/server'
 import { addDays,format } from 'date-fns'
-import type { Schedule } from '@/types/calendar'
+import type { NewSchedule,Schedule } from '@/types/calendar'
 
 const today = new Date()
 
-export const scheduleStore: Schedule[] = [
+export let scheduleStore: Schedule[] = [
     {
         id:1,
         title:"説明1",
@@ -39,4 +39,14 @@ export const scheduleStore: Schedule[] = [
 
 export async function GET(){
     return NextResponse.json(scheduleStore)
+}
+
+export async function POST(req: NextRequest){
+    const newSchedule: NewSchedule = await req.json()
+    const addedSchedule: Schedule = {
+        ...newSchedule,
+        id: scheduleStore.length + 1
+    }
+    scheduleStore = [...scheduleStore,addedSchedule]
+    return NextResponse.json(addedSchedule)
 }
