@@ -7,7 +7,7 @@ export const CreateScheduleModal = ({
     newSchedule,
     setNewSchedule,
     onAddSchedule,
-}: PropsdType) => {
+}: PropsType) => {
     return(
         <Modal
             isOpen={isOpen}
