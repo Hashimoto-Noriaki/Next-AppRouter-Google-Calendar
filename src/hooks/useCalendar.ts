@@ -8,6 +8,7 @@ type PropsType = {
 
 export const useCalendar = ({ currentDate }: PropsType) => {
     const [dateList,setDateList] = useState<DateList>([])
+    const [refreshKey,setRefreshKey] = useState(0)
 
     useEffect(()=> {
         const fetchCalendar = async() => {
@@ -41,7 +42,9 @@ export const useCalendar = ({ currentDate }: PropsType) => {
             setDateList(newDateList)
         }
         fetchCalendar()
-    },[currentDate])
+    },[currentDate,refreshKey])
 
-    return { dateList }
+    const refetch = ()=> setRefreshKey((prev) => prev + 1)
+
+    return { dateList,refetch }
 }
