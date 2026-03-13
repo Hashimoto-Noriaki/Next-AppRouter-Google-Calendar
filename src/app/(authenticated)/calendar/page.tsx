@@ -3,10 +3,20 @@
 import { useState } from 'react'
 import { getMonth } from 'date-fns'
 import { useCalendar } from '@/hooks/useCalendar'
-import { CalendarBody, CalendarHeader, CalendarNav } from '@/features/calendar/components'
+import { CalendarBody, CalendarHeader, CalendarNav,CreateScheduleModal } from '@/features/calendar/components'
+import { PrimaryBtn } from '@/shared/components/atoms'
+import type { NewSchedule } from '@/types/calendar'
+
+const initialNewSchedule: NewSchedule = {
+    title: "",
+    date: "",
+    description: "",
+}
 
 export default function CalendarPage() {
     const [currentDate,setCurrentDate] = useState(new Date())
+    const [isOpenCreateModal,setIsOpenCreateModal] = useState(false)
+    const [newSchedule, setNewSchedule] = useState<NewSchedule>(initialNewSchedule)
     const { dateList } = useCalendar({ currentDate })
 
     return (
@@ -14,11 +24,21 @@ export default function CalendarPage() {
             <h1 className="font-bold text-3xl mb-5">
                 {`${getMonth(currentDate)+ 1}月`}
             </h1>
-            <CalendarNav setCurrentDate={setCurrentDate}/>
+            <div className="w-[80%] flex justify-between mb-2">
+                <CalendarNav setCurrentDate={setCurrentDate}/>
+                <PrimaryBtn size="sm" onClick={() => setIsOpenCreateModal(true)}>予定を作成</PrimaryBtn>
+            </div>
             <table className="w-[80%] border-collapse border-2 border-solid border-lime-800 table-fixed">
                 <CalendarHeader/>
                 <CalendarBody currentDate={currentDate} dateList={dateList}/>
             </table>
+            <CreateScheduleModal
+                isOpen={isOpenCreateModal}
+                onClose={()=> setIsOpenCreateModal(false)}
+                newSchedule={newSchedule}
+                setNewSchedule={setNewSchedule}
+                onAddSchedule={()=> {}}
+            />
         </>
     )
 }
