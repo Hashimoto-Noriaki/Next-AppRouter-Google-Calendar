@@ -1,38 +1,23 @@
 'use client'
 
 import { useState } from 'react'
-import { format,getMonth } from 'date-fns'
+import { getMonth } from 'date-fns'
 import { useCalendar } from '@/hooks/useCalendar'
+import { useCreateSchedule } from '@/features/calendar/hooks/useCreateSchedule'
 import { CalendarBody, CalendarHeader, CalendarNav,CreateScheduleModal } from '@/features/calendar/components'
 import { PrimaryBtn } from '@/shared/components/atoms'
-import type { NewSchedule } from '@/types/calendar'
-
-const initialNewSchedule: NewSchedule = {
-    title: "",
-    date: "",
-    description: "",
-}
 
 export default function CalendarPage() {
     const [currentDate,setCurrentDate] = useState(new Date())
     const [isOpenCreateModal,setIsOpenCreateModal] = useState(false)
-    const [newSchedule, setNewSchedule] = useState<NewSchedule>(initialNewSchedule)
     const { dateList,refetch } = useCalendar({ currentDate })
-
-    const addSchedule = async() => {
-        if(!newSchedule.title || !newSchedule.date) return
-        await fetch("/api/schedules",{
-            method:"POST",
-            headers:{ "Content-Type":"application/json"},
-            body: JSON.stringify(newSchedule)
-        })
-        refetch()
-        setIsOpenCreateModal(false)
-        setNewSchedule({
-            ...initialNewSchedule,
-            date: format(currentDate,"yyyy-MM-dd")
-        })
-    }
+    const { newSchedule, setNewSchedule, addSchedule } = useCreateSchedule({
+        currentDate,
+        onSuccess:() => {
+            refetch()
+            setIsOpenCreateModal(false)
+        },
+    })
 
     return (
         <>
