@@ -1,14 +1,15 @@
 import { getDate } from 'date-fns'
 import { dateColor } from '@/libs/date'
 import { ScheduleBtn } from '@/shared/components/atoms'
-import { DateList } from '@/types/calendar'
+import type { DateList,Schedule } from '@/types/calendar'
 
 type PropsType = {
     currentDate: Date
     dateList: DateList
+    onClickSchedule:(schedule: Schedule) => void
 }
 
-export const CalendarBody = ({ currentDate, dateList}: PropsType) => {
+export const CalendarBody = ({ currentDate, dateList,onClickSchedule }: PropsType) => {
     return (
         <tbody>
             {dateList.map((oneWeek,weekIndex)=> (
@@ -24,9 +25,12 @@ export const CalendarBody = ({ currentDate, dateList}: PropsType) => {
                             )}`}>
                                 {getDate(item.date)}
                             </span>
-                            <div className="flex flex-col items-ceenter gap-1 mb-2">
+                            <div className="flex flex-col items-center gap-1 pb-2">
                                 {item.schedules.map((schedule)=> 
-                                    <ScheduleBtn key={schedule.id} onClick={()=> {}}>
+                                    <ScheduleBtn 
+                                        key={schedule.id}
+                                        onClick={()=> onClickSchedule(schedule)}
+                                    >
                                         {schedule.title}
                                     </ScheduleBtn>
                                 )}
