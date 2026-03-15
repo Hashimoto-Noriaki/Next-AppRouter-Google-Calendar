@@ -50,3 +50,17 @@ export async function POST(req: NextRequest){
     scheduleStore = [...scheduleStore,addedSchedule]
     return NextResponse.json(addedSchedule)
 }
+
+export async function PATCH(req: NextRequest){
+    const updatedSchedule: Schedule = await req.json()
+    scheduleStore = scheduleStore.map((schedule) =>
+        schedule.id === updatedSchedule.id ? updatedSchedule : schedule
+    )
+    return NextResponse.json(updatedSchedule)
+}
+
+export async function DELETE(req: NextRequest){
+    const { id }: { id:number } = await req.json()
+    scheduleStore = scheduleStore.filter((schedule)=> schedule.id !== id)
+    return NextResponse.json({ id })
+}
