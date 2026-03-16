@@ -3,7 +3,7 @@
 import { prisma } from '@/libs/prisma'
 import type { NewSchedule, Schedule } from '@/types/calendar'
 
-export const getSchedule = async() => {
+export const getSchedules = async() => {
     return await prisma.schedule.findMany()
 }
 
