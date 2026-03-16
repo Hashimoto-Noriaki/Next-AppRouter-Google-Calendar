@@ -1,5 +1,6 @@
 import { useState,useEffect } from 'react'
 import { eachDayOfInterval,eachWeekOfInterval,endOfMonth,endOfWeek,isSameDay,parseISO,startOfMonth } from 'date-fns'
+import { getSchedules } from "@/actions/schedule"
 import type { DateList,Schedule } from "@/types/calendar"
 
 type PropsType = {
@@ -12,8 +13,7 @@ export const useCalendar = ({ currentDate }: PropsType) => {
 
     useEffect(()=> {
         const fetchCalendar = async() => {
-            const res = await fetch("/api/schedules")
-            const scheduleList: Schedule[] = await res.json()
+            const scheduleList: Schedule[] = await getSchedules()
 
             const monthOfSundayList = eachWeekOfInterval({
                 start:startOfMonth(currentDate),
