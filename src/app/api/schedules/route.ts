@@ -1,66 +1,31 @@
-import { NextRequest,NextResponse } from 'next/server'
-import { addDays,format } from 'date-fns'
-import type { NewSchedule,Schedule } from '@/types/calendar'
+import { NextRequest, NextResponse } from "next/server"
+import { prisma } from "@/libs/prisma"
+import type { NewSchedule, Schedule } from "@/types/calendar"
 
-const today = new Date()
-
-export let scheduleStore: Schedule[] = [
-    {
-        id:1,
-        title:"説明1",
-        description:"説明1",
-        date: format(today,"yyyy-MM-dd")
-    },
-    {
-        id:2,
-        title:"説明2",
-        description:"説明2",
-        date: format(addDays(today,1),"yyyy-MM-dd")
-    },
-    {
-        id:3,
-        title:"説明3",
-        description:"説明3",
-        date: format(addDays(today,7),"yyyy-MM-dd")
-    },
-    {
-        id:4,
-        title:"説明4",
-        description:"説明4",
-        date: format(addDays(today,9),"yyyy-MM-dd")
-    },
-    {
-        id:5,
-        title:"説明5",
-        description:"説明5",
-        date: format(addDays(today,-9),"yyyy-MM-dd")
-    },
-]
-
-export async function GET(){
-    return NextResponse.json(scheduleStore)
+export async function GET() {
+  const schedules = await prisma.schedule.findMany()
+  return NextResponse.json(schedules)
 }
 
-export async function POST(req: NextRequest){
-    const newSchedule: NewSchedule = await req.json()
-    const addedSchedule: Schedule = {
-        ...newSchedule,
-        id: scheduleStore.length + 1
-    }
-    scheduleStore = [...scheduleStore,addedSchedule]
-    return NextResponse.json(addedSchedule)
+export async function POST(req: NextRequest) {
+  const newSchedule: NewSchedule = await req.json()
+  const addedSchedule = await prisma.schedule.create({
+    data: newSchedule,
+  })
+  return NextResponse.json(addedSchedule)
 }
 
-export async function PATCH(req: NextRequest){
-    const updatedSchedule: Schedule = await req.json()
-    scheduleStore = scheduleStore.map((schedule) =>
-        schedule.id === updatedSchedule.id ? updatedSchedule : schedule
-    )
-    return NextResponse.json(updatedSchedule)
+export async function PATCH(req: NextRequest) {
+  const { id, title, date, description }: Schedule = await req.json()
+  const updatedSchedule = await prisma.schedule.update({
+    where: { id },
+    data: { title, date, description },
+  })
+  return NextResponse.json(updatedSchedule)
 }
 
-export async function DELETE(req: NextRequest){
-    const { id }: { id:number } = await req.json()
-    scheduleStore = scheduleStore.filter((schedule)=> schedule.id !== id)
-    return NextResponse.json({ id })
+export async function DELETE(req: NextRequest) {
+  const { id }: { id: number } = await req.json()
+  await prisma.schedule.delete({ where: { id } })
+  return NextResponse.json({ id })
 }
