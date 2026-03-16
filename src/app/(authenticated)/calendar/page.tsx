@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { getMonth } from 'date-fns'
 import { useCalendar } from '@/hooks/useCalendar'
 import { useCreateSchedule } from '@/features/calendar/hooks/useCreateSchedule'
+import { useEditSchedule } from '@/features/calendar/hooks/useEditSchedule'
 import { CalendarBody, CalendarHeader, CalendarNav,CreateScheduleModal,ScheduleDetailModal } from '@/features/calendar/components'
 import { PrimaryBtn } from '@/shared/components/atoms'
 import type { Schedule } from "@/types/calendar"
@@ -18,6 +19,13 @@ export default function CalendarPage() {
         onSuccess:() => {
             refetch()
             setIsOpenCreateModal(false)
+        },
+    })
+
+    const { editSchedule, removeSchedule } = useEditSchedule({
+        onSuccess:()=> {
+            refetch()
+            setSelectedSchedule(null)
         },
     })
 
@@ -48,6 +56,8 @@ export default function CalendarPage() {
             <ScheduleDetailModal
                 selectedSchedule={selectedSchedule}
                 onClose={() => setSelectedSchedule(null)}
+                onUpdate={editSchedule}
+                onDelete={removeSchedule}
             />
         </>
     )
