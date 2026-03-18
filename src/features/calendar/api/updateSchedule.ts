@@ -1,10 +1,11 @@
+"use server"
+
+import { prisma } from '@/libs/prisma'
 import type { Schedule } from '@/types/calendar'
 
-export const updateSchedule = async (schedule: Schedule) => {
-    const res = await fetch("/api/schedules",{
-        method: "PATCH",
-        headers: { "Content-Type":"application/json" },
-        body: JSON.stringify(schedule),
+export const updateSchedule = async ({ id, title, date, description }: Schedule) => {
+    return await prisma.schedule.update({
+        where: { id },
+        data: { title, date, description },
     })
-    return res.json()
 }
